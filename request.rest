@@ -1,0 +1,47 @@
+GET http://localhost:5000/users
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJKb2huIERvZSIsIm1haWwiOiJyaXpreUBnbWFpbC5jb20iLCJpYXQiOjE3MTY3Nzk3MTQsImV4cCI6MTcxNjc4MDYxNH0.eH82V0y7JeXks-PBHfMHVKfv2lIv395pAT1UDdNo0VM
+
+
+###
+GET http://localhost:5000/users/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJBaXN5YWgiLCJtYWlsIjoiYWlzQGdtYWlsLmNvbSIsImlhdCI6MTcxNjc4MzE4MywiZXhwIjoxNzE2Nzg0MDgzfQ.djqTFs1UtxVDv8uI1Nxk3CuvOVh_TmgSxlPGWiZ23sA
+
+###
+GET http://localhost:5000/smartphones/oppo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJBaXN5YWgiLCJtYWlsIjoiYWlzQGdtYWlsLmNvbSIsImlhdCI6MTcxNjgxODg5NSwiZXhwIjoxNzE2ODE5Nzk1fQ.qFs1ae-XF5CEzbC4taJFGpJ7f4w3SouQxKEIegFYcvo
+
+
+###
+GET http://localhost:5000/smartphones
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJBaXN5YWgiLCJtYWlsIjoiYWlzQGdtYWlsLmNvbSIsImlhdCI6MTcxNjc4NzIzMSwiZXhwIjoxNzE2Nzg4MTMxfQ.i0sBtZr3DWcfE0Ie5GPp04yoBNQi4PuS_62yTt0u-Yk
+
+###
+GET http://localhost:5000/community
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJBaXN5YWgiLCJtYWlsIjoiYWlzQGdtYWlsLmNvbSIsImlhdCI6MTcxNjc5MjYxNiwiZXhwIjoxNzE2NzkzNTE2fQ.koXF30LEufVijrCbsIXYmxRWmpCiRZk10JNuGRUZMw8
+###
+POST http://localhost:5000/community/add
+Content-Type: application/json
+{
+    "user_id": 3,
+   "caption": "Hello World"
+}
+
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "Aisyah",
+    "email": "ais@gmail.com",
+    "password": "123456",
+    "confirmPassword" : "123456"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "ais@gmail.com",
+    "password": "123456"    
+}
