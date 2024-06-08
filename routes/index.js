@@ -6,6 +6,7 @@ import {
   createUser,
   loginUser,
   resetPassword,
+  editUser,
   logout
 } from "../controllers/Users.js";
 import { loginFilter } from "../filters/LoginFilter.js";
@@ -19,6 +20,7 @@ import {
   getCommunityById,
   createCommunity,
   deleteCommunityById,
+  deleteOldCommunities
 } from "../controllers/Community.js";
 import {
   getCommunity_image,
@@ -87,7 +89,9 @@ router.post("/user_ratings/add", createUserRatings);
 router.post("/user_surveys/add", createUserSurveys);
 router.post("/wishlist/add", createWishlist);
 router.post("/user_clicks/add", createUserClicks);
+router.put("/edit_profile/:id", loginFilter, editUser);
 router.delete("/community/:id", loginFilter, deleteCommunityById);
+router.delete('/community-old', deleteOldCommunities);
 router.delete("/wishlist/:id", deleteWishlistById);
 router.delete("/logout/:id",loginFilter, logout);
 

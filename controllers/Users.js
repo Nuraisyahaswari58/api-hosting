@@ -21,17 +21,22 @@ export const getUsersById = async (req, res) => {
   }
 };
 
+
+//make if duplicate email return error message 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, profileImage, password, confirmPassword } = req.body;
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
+    }else if (await Users.findOne({ where: { email } })) {
+      return res.status(400).json({ message: "Email already exists" });
     }
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
     await Users.create({
       name,
       email,
+      profileImage,
       password: hashPassword,
     });
     res.json({ msg: "User created successfully" });
@@ -40,14 +45,20 @@ export const createUser = async (req, res) => {
   }
 };
 
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await Users.findAll({ where: { email } });
+    // Check for invalid email
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email" });
+    }
     const match = await bcrypt.compare(password, user[0].password);
     if (!match) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Password does not match" });
     }
+
     const userId = user[0].id;
     const name = user[0].name;
     const mail = user[0].email;
@@ -78,9 +89,17 @@ export const loginUser = async (req, res) => {
       { maxAge: 7 * 24 * 60 * 60 * 1000 },
       { secure: true }
     );
-    res.json({ accessToken });
+    // Respon sukses dengan detail pengguna
+    res.json({
+      message: "success",
+      userId: userId,
+      name: name,
+      token: accessToken
+    });
   } catch (error) {
     console.error(error);
+    // Respon error jika terjadi masalah
+    res.status(500).json({ message: "error" });
   }
 };
 
@@ -107,6 +126,26 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+//edit user profile 
+export const editUser = async (req, res) => {
+  try {
+    const { name, email, profileImage } = req.body;
+    if (await Users.findOne({ where: { email } })) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+    await Users.update(
+      { name, email, profileImage },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+    res.json({ msg: "User updated successfully" });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 //create logout
 export const logout = async (req, res) => {
