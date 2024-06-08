@@ -46,6 +46,13 @@ import{
   getUserClicks,
   createUserClicks,
 } from "../controllers/UserClicks.js";
+import{
+  getTopSmartphones,
+} from "../controllers/MLHomepage.js";
+import{
+  getTopSmartphonesSurvey
+} from "../controllers/MLSurvey.js";
+
 
 const router = express.Router();
 
@@ -69,6 +76,8 @@ router.get("/user_surveys/user/:user_id", getUserSurveysByUserId);
 router.get("/wishlist", getWishlist);
 router.get("/wishlist/user/:user_id", getWishlistByUserId);
 router.get("/user_clicks", getUserClicks);
+router.get("/topSmartphones/:id", getTopSmartphones);
+router.post("/topUserSurveys", getTopSmartphonesSurvey);
 router.post("/users", createUser);
 router.post("/login", loginUser);
 router.post("/resetPassword/:id", loginFilter, resetPassword);
