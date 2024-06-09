@@ -1,4 +1,5 @@
 import Community from "../models/CommunityModel.js";
+import CommunityLikes from "../models/CommunityLikesModel.js";
 import { Op } from "sequelize";
 import cron from "node-cron";
 
@@ -73,6 +74,16 @@ cron.schedule("0 0 * * *", () => {
   console.log("Running scheduled job to delete old communities");
   deleteOldCommunities();
 });
+
+export const getLikesByPostId = async (req, res) => {
+  try {
+    const likes = await CommunityLikes.findAll({ where: { community_id: req.params.community_id } });
+    res.json(likes);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 
 

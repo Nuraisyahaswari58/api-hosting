@@ -20,10 +20,11 @@ import {
   createCommunity,
   deleteCommunityById,
   deleteOldCommunities,
+  getLikesByPostId
 } from "../controllers/Community.js";
 import{
   likePost,
-  unlikePost
+  unlikePost,
 }from "../controllers/CommunityLikes.js";
 import {
   getUserRatings,
@@ -81,6 +82,7 @@ router.get("/user_clicks", getUserClicks);
 router.get("/comments", getComments);
 router.get("/comments/:community_id", getCommentsByCommunityId);
 router.get("/topSmartphones/:id", getTopSmartphones);
+router.get("/getLikesByPostId/:community_id", getLikesByPostId);
 router.post("/topUserSurveys", getTopSmartphonesSurvey);
 router.post("/users", createUser);
 router.post("/login", loginUser);
