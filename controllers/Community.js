@@ -12,10 +12,11 @@ export const getCommunity = async (req, res) => {
 };
 export const createCommunity = async (req, res) => {
   try {
-    const { user_id, caption } = req.body;
+    const { user_id, caption, image } = req.body;
     await Community.create({
       user_id,
       caption,
+      image,
     });
     res.json({ msg: "Community created successfully" });
   } catch (error) {
@@ -72,3 +73,6 @@ cron.schedule("0 0 * * *", () => {
   console.log("Running scheduled job to delete old communities");
   deleteOldCommunities();
 });
+
+
+
