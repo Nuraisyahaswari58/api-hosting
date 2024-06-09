@@ -6,7 +6,6 @@ import {
   loginUser,
   resetPassword,
   editUser,
-  logout
 } from "../controllers/Users.js";
 import { loginFilter } from "../filters/LoginFilter.js";
 import {
@@ -20,12 +19,9 @@ import {
   createCommunity,
   deleteCommunityById,
   deleteOldCommunities,
-  getLikesByPostId
+  getLikesByPostId,
 } from "../controllers/Community.js";
-import{
-  likePost,
-  unlikePost,
-}from "../controllers/CommunityLikes.js";
+import { likePost, unlikePost } from "../controllers/CommunityLikes.js";
 import {
   getUserRatings,
   createUserRatings,
@@ -42,23 +38,16 @@ import {
   createWishlist,
   deleteWishlistById,
 } from "../controllers/Wishlist.js";
-import{
-  getUserClicks,
-  createUserClicks,
-} from "../controllers/UserClicks.js";
-import{
+import { getUserClicks, createUserClicks } from "../controllers/UserClicks.js";
+import {
   getComments,
   createComments,
-  getCommentsByCommunityId 
+  getCommentsByCommunityId,
 } from "../controllers/Comments.js";
 
-import{
-  getTopSmartphones,
-} from "../controllers/MLHomepage.js";
-import{
-  getTopSmartphonesSurvey
-} from "../controllers/MLSurvey.js";
-
+import { getTopSmartphones } from "../controllers/MLHomepage.js";
+import { getTopSmartphonesSurvey } from "../controllers/MLSurvey.js";
+import { getRelatedPhone } from "../controllers/MLRelatedPhone.js";
 
 const router = express.Router();
 
@@ -82,6 +71,7 @@ router.get("/user_clicks", getUserClicks);
 router.get("/comments", getComments);
 router.get("/comments/:community_id", getCommentsByCommunityId);
 router.get("/topSmartphones/:id", getTopSmartphones);
+router.get("/relatedPhone/:id", getRelatedPhone);
 router.get("/getLikesByPostId/:community_id", getLikesByPostId);
 router.post("/topUserSurveys", getTopSmartphonesSurvey);
 router.post("/users", createUser);
@@ -97,8 +87,7 @@ router.post("/community/like", likePost);
 router.post("/community/unlike", unlikePost);
 router.put("/edit_profile/:id", loginFilter, editUser);
 router.delete("/community/:id", loginFilter, deleteCommunityById);
-router.delete('/community-old', deleteOldCommunities);
+router.delete("/community-old", deleteOldCommunities);
 router.delete("/wishlist/:id", deleteWishlistById);
-router.delete("/logout/:id",loginFilter, logout);
 
 export default router;

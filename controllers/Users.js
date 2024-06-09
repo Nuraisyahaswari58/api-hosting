@@ -159,12 +159,3 @@ export const editUser = async (req, res) => {
   }
 };
 
-//create logout
-export const logout = async (req, res) => {
-  try {
-    res.clearCookie("refreshToken");
-    res.json({ msg: "Logged out successfully" });
-  } catch (error) {
-    console.error(error);
-  }
-};
