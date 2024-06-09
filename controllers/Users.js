@@ -1,6 +1,7 @@
 import Users from "../models/UsersModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { uploadImageToGCS } from "../utils/upload.js"
 
 export const getUsers = async (req, res) => {
   try {
@@ -25,23 +26,34 @@ export const getUsersById = async (req, res) => {
 //make if duplicate email return error message 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, profileImage, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
+    let profileImage = req.body.profileImage; // Ambil nama file gambar profil dari request
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
-    }else if (await Users.findOne({ where: { email } })) {
+    } else if (await Users.findOne({ where: { email } })) {
       return res.status(400).json({ message: "Email already exists" });
     }
+
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
+
+    // Jika ada gambar profil yang diunggah, unggah ke GCS dan dapatkan URL-nya
+    if (req.file) {
+      profileImage = await uploadImageToGCS(req.file);
+    }
+
     await Users.create({
       name,
       email,
       profileImage,
       password: hashPassword,
     });
+
     res.json({ msg: "User created successfully" });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
