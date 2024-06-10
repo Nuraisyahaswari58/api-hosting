@@ -1,57 +1,69 @@
-import Testing from "../models/TestingModel.js";
-import processFile from "../filters/upload.js";
-import { Storage } from "@google-cloud/storage";
-import { format } from "util";
+import Testing from '../models/TestingModel.js';
+import { Storage } from '@google-cloud/storage';
+import { format } from 'util';
+import multer from 'multer';
 
-const storage = new Storage({ keyFilename: "google-cloud-key.json" });
-const bucket = storage.bucket("storage-auxilium");
+const storage = new Storage({ keyFilename: 'google-cloud-key.json' });
+const bucket = storage.bucket('storage-auxilium');
+
+const multerStorage = multer.memoryStorage();
+const uploadMiddleware = multer({ storage: multerStorage }).single('file');
 
 const uploadImageToGCS = (file) => {
-  return new Promise((resolve, reject) => {
-    const blob = bucket.file(file.originalname);
-    const blobStream = blob.createWriteStream({
-      resumable: false,
-    });
+	return new Promise((resolve, reject) => {
+		if (!file || !file.originalname) {
+			reject(new Error('A file name must be specified.'));
+			return;
+		}
 
-    blobStream.on("error", (err) => {
-      reject(err); // Menolak promise jika terjadi kesalahan
-    });
+		const blob = bucket.file(file.originalname);
+		const blobStream = blob.createWriteStream({
+			resumable: false
+		});
 
-    blobStream.on("finish", async () => {
-      const publicUrl = format(
-        `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-      );
+		blobStream.on('error', (err) => {
+			reject(err);
+		});
 
-      try {
-        await bucket.file(file.originalname).makePublic();
-        resolve(publicUrl); // Mengembalikan URL publik jika sukses
-      } catch (err) {
-        reject(err); // Menolak promise jika terjadi kesalahan saat membuat file menjadi publik
-      }
-    });
+		blobStream.on('finish', async () => {
+			const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${blob.name}`);
 
-    blobStream.end(file.buffer);
-  });
+			try {
+				await bucket.file(file.originalname).makePublic();
+				resolve(publicUrl);
+			} catch (err) {
+				reject(err);
+			}
+		});
+
+		blobStream.end(file.buffer);
+	});
 };
 
-export const upload = async (req, res) => {
-  try {
-    const { nama } = req.fields;
-    await processFile(req, res);
-    if (!req.files) {
-      res.status(400).send("No file uploaded.");
-      return;
-    }
+export const upload = (req, res) => {
+	uploadMiddleware(req, res, async (err) => {
+		if (err) {
+			return res.status(500).send('Error uploading file.');
+		}
 
-    const imageUrl = await uploadImageToGCS(req.files);
+		try {
+			const { nama } = req.body;
+			if (!req.file) {
+				return res.status(400).send('No file uploaded.');
+			}
 
-    const image = await Testing.create({
-      nama,
-      image: imageUrl,
-    });
+			const file = req.file;
+			const imageUrl = await uploadImageToGCS(file);
 
-    res.json(image);
-  } catch (error) {
-    console.error(error);
-  }
+			const image = await Testing.create({
+				nama,
+				image: imageUrl
+			});
+
+			res.json(image);
+		} catch (error) {
+			console.error(error);
+			res.status(500).send('An error occurred while uploading the file.');
+		}
+	});
 };
