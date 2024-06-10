@@ -48,8 +48,11 @@ import {
 import { getTopSmartphones } from "../controllers/MLHomepage.js";
 import { getTopSmartphonesSurvey } from "../controllers/MLSurvey.js";
 import { getRelatedPhone } from "../controllers/MLRelatedPhone.js";
+import { upload } from "../controllers/Testing.js";
 
 const router = express.Router();
+
+ router.post("/upload", upload);
 
 router.get("/users", loginFilter, getUsers);
 router.get("/users/:id", loginFilter, getUsersById);

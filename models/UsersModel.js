@@ -9,8 +9,9 @@ const Users = db.define('users', {
         allowNull: false
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
     },
     profileImage: {
         type: DataTypes.STRING,

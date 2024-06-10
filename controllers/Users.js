@@ -1,7 +1,7 @@
 import Users from "../models/UsersModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { uploadImageToGCS } from "../utils/upload.js"
+
 
 export const getUsers = async (req, res) => {
   try {
