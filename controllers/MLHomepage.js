@@ -31,7 +31,7 @@ export const getTopSmartphones = async (req, res) => {
     let user_rating = new Array(phone_count).fill(0);
     for (let i = 0; i < user_rating_raw.length; i++) {
       const smartphoneId = user_rating_raw[i].smartphone_id;
-      user_rating[smartphoneId] = 1;
+      user_rating[smartphoneId] = user_rating_raw[i].rating;;
     }
 
     const data = {

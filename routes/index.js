@@ -1,5 +1,4 @@
 import express from "express";
-import formidableMiddleware from "express-formidable";
 import {
   getUsers,
   getUsersById,
@@ -49,11 +48,8 @@ import {
 import { getTopSmartphones } from "../controllers/MLHomepage.js";
 import { getTopSmartphonesSurvey } from "../controllers/MLSurvey.js";
 import { getRelatedPhone } from "../controllers/MLRelatedPhone.js";
-import { upload } from "../controllers/Testing.js";
 
 const router = express.Router();
-
-router.post("/upload", formidableMiddleware(), upload);
 
 router.get("/users", loginFilter, getUsers);
 router.get("/users/:id", loginFilter, getUsersById);
@@ -79,7 +75,7 @@ router.get("/relatedPhone/:id", getRelatedPhone);
 router.get("/getLikesByPostId/:community_id", getLikesByPostId);
 router.post("/topUserSurveys", getTopSmartphonesSurvey);
 router.post("/users", createUser);
-router.post("/login", formidableMiddleware(), loginUser);
+router.post("/login", loginUser);
 router.post("/resetPassword/:id", loginFilter, resetPassword);
 router.post("/community/add", loginFilter, createCommunity);
 router.post("/user_ratings/add", createUserRatings);

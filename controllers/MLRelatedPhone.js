@@ -8,15 +8,12 @@ export const getRelatedPhone = async (req, res) => {
   try {
     const phoneId = req.params.id;
 
-   
     let phone_count = await Smartphones.count();
     let user_click = new Array(phone_count).fill(0);
     user_click[phoneId] = 1;
 
-
     let user_rating = new Array(phone_count).fill(0);
-    user_rating[phoneId] = 1;
-  
+    user_rating[phoneId] = 5;
 
     const data = {
       phone_count: phone_count,
