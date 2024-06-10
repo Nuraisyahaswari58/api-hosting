@@ -60,7 +60,7 @@ export const createUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.fields;
     const user = await Users.findAll({ where: { email } });
     // Check for invalid email
     if (!user) {

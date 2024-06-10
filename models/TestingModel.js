@@ -10,7 +10,7 @@ const TestingModel = db.define('testing', {
     },
     image: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     }
 },{freezeTableName: true });
 

@@ -36,20 +36,20 @@ const uploadImageToGCS = (file) => {
 
 export const upload = async (req, res) => {
   try {
-    const { nama } = req.body;
+    const { nama } = req.fields;
     await processFile(req, res);
-    if (!req.file) {
+    if (!req.files) {
       res.status(400).send("No file uploaded.");
       return;
     }
 
-    const imageUrl = await uploadImageToGCS(req.file);
+    const imageUrl = await uploadImageToGCS(req.files);
 
     const image = await Testing.create({
       nama,
       image: imageUrl,
     });
-    
+
     res.json(image);
   } catch (error) {
     console.error(error);
