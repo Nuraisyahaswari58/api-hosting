@@ -5,8 +5,8 @@ import { Storage } from "@google-cloud/storage";
 import { format } from "util";
 import multer from "multer";
 
-const storage = new Storage({ keyFilename: "google-cloud-key.json" });
-const bucket = storage.bucket("storage-auxilium");
+const storage = new Storage({ keyFilename: "D:/final-api/google-cloud-key.json" });
+const bucket = storage.bucket("storage_auxilium");
 
 const multerStorage = multer.memoryStorage();
 const uploadMiddleware = multer({ storage: multerStorage }).single("file");
